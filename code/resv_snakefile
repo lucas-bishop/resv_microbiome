@@ -1,0 +1,17 @@
+all_filename_bases = glob_wildcards("/nfs/turbo/schloss-lab/miseq_runs2/2019_runs/Resveratrol_MVEp1p2_Jul2019/Data/Intensities/BaseCalls/{filename}.fastq.gz").filename
+
+with open("resv_seqs.txt", "r") as file:
+	resv_partial_bases = {line.strip().split("_")[0] for line in file}
+
+resv_filename_bases = {filename for filename in all_filename_bases if filename.split("-")[0] in resv_partial_bases}
+
+rule all: 
+	input: expand("sequences/{filename_base}.fastq.gz", filename_base = resv_filename_bases)
+
+rule copy:
+	input: "/nfs/turbo/schloss-lab/miseq_runs2/2019_runs/Resveratrol_MVEp1p2_Jul2019/Data/Intensities/BaseCalls/{filename}.fastq.gz"
+	output: "sequences/{filename}.fastq.gz"
+	shell: "cp {input} {output}"
+
+
+
