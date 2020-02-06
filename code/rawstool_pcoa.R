@@ -16,7 +16,8 @@ metadata_pcoa <- inner_join(metadata, pcoa, by='group')
 ggplot(metadata_pcoa, aes(x=axis1, y=axis2, color = stool_id)) +
   geom_point(size = 4, alpha = 0.5) +
   coord_fixed() +
-  labs(title="PCoA of Bray-Curtis dissimilarity Between Raw Stool Samples",
+  labs(title="PCoA of Bray-Curtis dissimilarity",
+       subtitle="Raw stool samples",
        x="PCo Axis 1",
        y="PCo Axis 2") +
   theme_classic()
