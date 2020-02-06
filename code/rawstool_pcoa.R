@@ -21,3 +21,5 @@ ggplot(metadata_pcoa, aes(x=axis1, y=axis2, color = stool_id)) +
        x="PCo Axis 1",
        y="PCo Axis 2") +
   theme_classic()
+###Add plot with the 0 hour, no treatment stool samples? If enough reads##
+

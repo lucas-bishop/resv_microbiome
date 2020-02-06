@@ -1,6 +1,7 @@
 #! /bin/bash
 # mothurAll.sh
 # William L. Close
+# modified by: Lucas Bishop
 # Schloss Lab
 # University of Michigan
 
