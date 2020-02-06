@@ -5,10 +5,10 @@ set.dir(input=data/mothur/, output=data/mothur/)
 sub.sample(shared=final.shared, size=1000)
 rarefaction.single(shared=final.shared, calc=sobs, freq=100)
 summary.single(shared=current, calc=nseqs-coverage-invsimpson-shannon-sobs, subsample=1000)
-dist.shared(shared=current, calc=sharedsobs-thetayc-braycurtis-jclass)
+dist.shared(shared=current, calc=thetayc-braycurtis-jclass)
 
 #generating 2d nmds
-nmds(phylip=current)
+nmds(phylip=final.thetayc.0.03.lt.dist)
 
 #generating PCoA based on distances
-pcoa(phylip=current)
+pcoa(phylip=final.braycurtis.0.03.lt.dist)
