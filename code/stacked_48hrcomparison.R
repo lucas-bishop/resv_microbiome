@@ -65,7 +65,7 @@ taxa_metadata <- inner_join(shared_taxa, relevant_metadata)
 colours = c( "#A54657",  "#582630", "#F7EE7F", "#4DAA57","#F1A66A","#F26157", "#F9ECCC", 
              "#679289", "#33658A","#F6AE2D","#86BBD8", "#87BBD8")
 
-
+## need to add code to pull top 5 phyla and make Y axis equal to 100%
 taxa_metadata %>% 
   ggplot(., aes(x=Treatment, fill=phylum, y=relabund)) +
   geom_bar(stat = "identity") +

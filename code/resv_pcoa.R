@@ -37,7 +37,7 @@ relevant_metadata <- rbind(metadata1, metadata2, metadata3, metadata4, metadata5
   filter(!group %in% c('48hr_RESA', '48hr_RESB', '48hr_WEA', '48hr_WEB'))
 
 
-pcoa <- read_tsv("final.braycurtis.0.03.lt.pcoa.axes")
+pcoa <- read_tsv("data/mothur/final.braycurtis.0.03.lt.pcoa.axes")
 
 metadata_pcoa <- inner_join(relevant_metadata, pcoa, by='group')
 
