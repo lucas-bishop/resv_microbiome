@@ -10,14 +10,12 @@ Exploratory analysis into the effects of resveratrol and red wine extract on the
 	|- README          # the top level description of project
 	|- LICENSE         # the license for this project
 	|
-	|
 	|- data           # raw and primary data, are not changed once created
 	| |- references/  # reference files to be used in analysis
 	| |- raw/         # raw data, will not be altered
 	| |- mothur/      # mothur processed data
 	| +- process/     # cleaned data, will not be altered once created;
 	|                 # will be committed to repo
-	|
 	|- code/          # any programmatic code
 	|
 	|- results        # all output from workflows and analyses
@@ -40,12 +38,16 @@ Exploratory analysis into the effects of resveratrol and red wine extract on the
 * R packages:
   * `knitr`
   * `rmarkdown`
+  * `ggplot2`
+  * `tidyverse`
+  * `broom`
+  * `RColorBrewer`
 * etc
 
 
 #### Running analysis
 
 ```
-git clone https://github.com/SchlossLab/LastName_BriefDescription_Journal_Year.git
-make write.paper
+git clone https://github.com/lucas-bishop/resv_microbiome
+
 ```
