@@ -1,4 +1,5 @@
 library(tidyverse)
+library(ggplot2)
 library(broom)
 library(cowplot)
 library(RColorBrewer)
@@ -32,8 +33,13 @@ metadata5 <- read_tsv("data/mothur/resv_metadata.txt") %>%
   filter(Treatment == 'WineExtractB') %>% 
   mutate(Hour=factor(Hour))
 
-relevant_metadata <- rbind(metadata1, metadata2, metadata3, metadata4, metadata5) %>% 
-  select(-R1_filename, -R2_filename) %>% 
+##Read in metadata for all 48hr samples that we care about 
+relevant_metadata <- read_tsv("data/mothur/resv_metadata.txt") %>%
+  #rbind(metadata1, metadata2, metadata3, metadata4, metadata5) %>% 
+  rename("group" = "Group") %>%
+  filter(Hour == '48') %>%
+  rbind(metadata1) %>%
+  select(-R1_filename, -R2_filename) %>%
   filter(!group %in% c('48hr_RESA', '48hr_RESB', '48hr_WEA', '48hr_WEB'))
                        
                        
@@ -61,18 +67,26 @@ shared_taxa <- inner_join(shared, taxonomy)
 
 taxa_metadata <- inner_join(shared_taxa, relevant_metadata)
 
+
+
 ##Easily readable colors for top 10
 colours = c( "#A54657",  "#582630", "#F7EE7F", "#4DAA57","#F1A66A","#F26157", "#F9ECCC", 
-             "#679289", "#33658A","#F6AE2D","#86BBD8", "#87BBD8")
+             "#679289", "#33658A","#F6AE2D","#86BBD8")
 
-## need to add code to pull top 5 phyla and make Y axis equal to 100%
+top_phyla <- c("Firmicutes", "Bacteroidetes", "Proteobacteria",
+               "Actinobacteria", "Deferribacteres", "Fusobacteria")
+
+
+## need to add code make Y axis equal to 100%
 taxa_metadata %>% 
-  ggplot(., aes(x=Treatment, fill=phylum, y=relabund)) +
+  filter(phylum %in% top_phyla) %>% 
+  ggplot(., aes(x=Treatment, fill=phylum, y=100*relabund)) +
+  ## normalize values to 100
   geom_bar(stat = "identity") +
   facet_wrap(~ stool_id) +
-  theme(axis.text.x = element_text(angle = 90, size = 14, colour = "black", vjust = 0.5, hjust = 1, face= "bold"), 
-        axis.title.y = element_text(size = 16, face = "bold"), legend.title = element_text(size = 16, face = "bold"), 
-        legend.text = element_text(size = 12, face = "bold", colour = "black"), 
+  theme(axis.text.x = element_text(angle = 90, size = 8, colour = "black", vjust = 0.5, hjust = 1, face= "bold"), 
+        axis.title.y = element_text(size = 16, face = "bold"), legend.title = element_text(size = 10, face = "bold"), 
+        legend.text = element_text(size = 8, face = "bold", colour = "black"), 
         axis.text.y = element_text(colour = "black", size = 12, face = "bold")) + 
   scale_y_continuous(expand = c(0,0)) + 
   labs(x = "", y = "Relative Abundance (%)", fill = "Phylum") + 
