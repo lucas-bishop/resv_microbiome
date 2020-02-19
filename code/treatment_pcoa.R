@@ -29,7 +29,7 @@ pcoa1 <- ggplot(metadata_pcoa, aes(x=axis1, y=axis2, shape = Hour)) +
   facet_wrap(~ stool_id) +
   coord_fixed() +
   labs(title="PCoA of Bray-Curtis dissimilarity",
-       subtitle = "0hr raw vs. RWE and Res",
+       subtitle = "0hr raw vs. 48Hr Treatments",
        x="PCo Axis 1",
        y="PCo Axis 2") +
   theme_classic()
