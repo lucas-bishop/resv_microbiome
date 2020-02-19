@@ -2,7 +2,6 @@ library(tidyverse)
 library(broom)
 library(cowplot)
 library(RColorBrewer)
-library(reshape2)
 
 metadata <- read_tsv("data/mothur/resv_metadata.txt") %>% 
   rename("group" = "Group") %>% 
@@ -26,15 +25,14 @@ taxonomy <- read_tsv("data/mothur/final.taxonomy") %>%
   # Separate taxonomic levels into separate columns according to semi-colon.
   separate(taxonomy, into=c("kingdom", "phylum", "class", "order", "family", "genus"), sep=';')
 
-##Easily readable colors for top 10
-colours = c( "#A54657",  "#582630", "#F7EE7F", "#4DAA57","#F1A66A","#F26157", "#F9ECCC", 
-             "#679289", "#33658A","#F6AE2D","#86BBD8", "#87BBD8")
-
+top_phyla <- c("Firmicutes", "Bacteroidetes", "Proteobacteria",
+               "Actinobacteria", "Deferribacteres", "Fusobacteria")
 
 shared_taxa <- inner_join(shared, taxonomy)
 
 
 shared_taxa %>% 
+  filter(phylum %in% top_phyla) %>% 
   ggplot(., aes(x=group, fill=phylum, y=relabund)) +
   geom_bar(stat = "identity") +
   theme(axis.text.x = element_text(angle = 90, size = 14, colour = "black", vjust = 0.5, hjust = 1, face= "bold"), 
@@ -43,7 +41,7 @@ shared_taxa %>%
         axis.text.y = element_text(colour = "black", size = 12, face = "bold")) + 
   scale_y_continuous(expand = c(0,0)) + 
   labs(x = "", y = "Relative Abundance (%)", fill = "Phylum") + 
-  scale_fill_manual(values = colours)
+  scale_fill_brewer(palette = "Set1")
 
 
 

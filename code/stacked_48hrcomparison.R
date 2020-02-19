@@ -21,14 +21,27 @@ relevant_metadata <- rbind(metadata1,metadata48hr) %>%
   filter(!Treatment %in% c("control"))
 
                        
-shared <- read_tsv("data/mothur/final.0.03.subsample.shared") %>% 
+shared1 <- read_tsv("data/mothur/final.0.03.subsample.shared") %>% 
   select(-label, -numOtus) %>% 
-  rename("group" = "Group") %>% 
+  rename("group" = "Group") %>%
   filter(!group %in% c('48hr_DMSOA', '48hr_DMSOB', '48hr_Media',
                        '48hr_RESA', '48hr_RESB', '48hr_WEA', '48hr_WEB',
-                       'DMSOA', 'DMSOB', 'Media', 'RESA', 'RESB', 'WEA', 'WEB')) %>% 
-  pivot_longer(-group, names_to = 'otu', values_to = 'count') %>% 
+                       'DMSOA', 'DMSOB', 'Media', 'RESA', 'RESB', 'WEA', 'WEB', 'S3', 'S24', 'S26', 'S27', 'S30')) %>% 
+  pivot_longer(-group, names_to = 'otu', values_to = 'count') %>%
+  mutate(count = (count/2))
+  
+
+shared2 <- read_tsv("data/mothur/final.0.03.subsample.shared") %>% 
+  select(-label, -numOtus) %>% 
+  rename("group" = "Group") %>% 
+  filter(group %in% c('S3', 'S24', 'S26', 'S27', 'S30')) %>% 
+  pivot_longer(-group, names_to = 'otu', values_to = 'count')
+
+##combine the two shared so that relabund column has all numbers normalized to 1
+shared <- rbind(shared1, shared2) %>% 
   mutate(relabund = count/1816)
+##divide by the lowest read count of relevant samples (1816) multiplied by two to account for tech. replicate
+
 
 taxonomy <- read_tsv("data/mothur/final.taxonomy") %>% 
   rename_all(tolower) %>% 
@@ -45,8 +58,8 @@ shared_taxa <- inner_join(shared, taxonomy)
 
 ###
 taxa_metadata <- inner_join(shared_taxa, relevant_metadata)
-### Add code here with condition; if treatment != None, 0.5 * relabund 
-###
+### 
+
 top_phyla <- c("Firmicutes", "Bacteroidetes", "Proteobacteria",
                "Actinobacteria", "Deferribacteres", "Fusobacteria")
 
