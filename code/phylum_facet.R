@@ -65,7 +65,7 @@ top_phyla <- c("Firmicutes", "Bacteroidetes", "Proteobacteria",
                "Actinobacteria", "Deferribacteres", "Fusobacteria")
 
 
-## need to add code make Y axis equal to 100%
+## need to group by stool id, and get read counts for each phylum from each treatment, and make relative to total phyla read counts by stool_id
 taxa_metadata %>% 
   filter(phylum %in% top_phyla) %>% 
   ggplot(., aes(x=stool_id, y=count)) +
